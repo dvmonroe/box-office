@@ -7,6 +7,11 @@ require "minitest/spec"
 require "minitest/reporters"
 require "mocha/minitest"
 require "pry"
+require "simplecov"
+
+SimpleCov.start do
+  add_filter "/test/"
+end
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "box/office"
