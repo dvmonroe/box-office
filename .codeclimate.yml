@@ -3,5 +3,3 @@ plugins:
   rubocop:
     enabled: true
     channel: rubocop-0-60
-    config:
-      file: .rubocop.yml
