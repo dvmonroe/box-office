@@ -1,5 +1,9 @@
 # Box::Office
 
+[![Build Status](https://travis-ci.org/dvmonroe/box-office.svg?branch=master)](https://travis-ci.org/dvmonroe/box-office)
+[![Code Climate](https://codeclimate.com/github/dvmonroe/box-office/badges/gpa.svg)](https://codeclimate.com/github/dvmonroe/box-office)
+[![Test Coverage](https://codeclimate.com/github/dvmonroe/box-office/badges/coverage.svg)](https://codeclimate.com/github/dvmonroe/box-office/coverage)
+
 A queue worth lining up for.
 
 ## Installation
