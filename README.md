@@ -20,17 +20,85 @@ Or install it yourself as:
 
 ## Usage
 
+Set up a new box office instance
+
+This auto generates at least three seperate queue instances that
+play a role in keeping the box office open
+
+  1. Standby
+  2. Reserved
+  3. Fulfilled
+
+You can override any of these names in the configuration
+
+```ruby
+showing = Box::Office.showing(name: "Jurassic Park", showings: 5)
 ```
-# showing = Box::Office.showing(name: "Jurassic Park", showings: 5)
 
-# showing.standby.push %w(1 2 3)
-# showing << %w(1 2 3)
-# showing.reserve do |queue, members|
-#   p queue
-#   p members
-# end 
+Push values to the standby list
 
-# showing.reserved(1)
+```ruby
+showing.standby.push %w(Alan Ellie)
+# OR
+showing << %w(Alan Ellie)
+```
+
+Start popping values from standby into the reserved queue
+
+```ruby
+showing.reserve
+```
+
+With a block you can get the returned queue and the members
+
+Utilizing the block will also take care of unlocking the queue to allow
+future processes to utilize it.
+
+```ruby
+showing.reserve do |queue, members|
+  # Do something with the queue and the members
+end
+```
+
+When the show is over, just pop the members from the reserved queue.
+If you've setup tracking of fulfilled, the member will be pushed to
+the fulfilled queue.
+
+```ruby
+showing.fulfill(showing.reserved, %(Alan))
+```
+
+Access any queue instance in the box office
+```ruby
+showing.standby
+showing.reserved
+showing.fulfilled
+```
+
+### Queue
+
+List all members
+
+```ruby
+showing.standby.members
+```
+
+Override the default limit of 100
+
+```ruby
+showing.standby.members(limit: 1_000)
+```
+
+Get length of the queue
+
+```ruby
+showing.standby.length
+```
+
+Empty the queue
+
+```ruby
+showing.standby.clear
 ```
 
 ## Development
@@ -41,7 +109,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/box-office. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dvmonroe/box-office. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
