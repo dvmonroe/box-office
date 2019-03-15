@@ -10,7 +10,7 @@ module Box
 
       delegate :config, to: Box::Office
 
-      def initialize(name: config.default_name, track_fulfilled: config.track_fulfilled,
+      def initialize(name: config.default_name, track_fulfilled: config.track_fulfilled?,
                      showings: config.showings, capacity: config.capacity)
         @name              = name
         @track_fulfilled   = track_fulfilled
@@ -29,7 +29,7 @@ module Box
       end
 
       def fulfill(queue, msg)
-        send(config.fulfilled) << msg if track_fulfilled?
+        send(config.fulfilled) << msg if track_fulfilled
         queue >> msg
       end
 

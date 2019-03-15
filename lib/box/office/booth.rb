@@ -16,12 +16,12 @@ module Box
         1.upto(showing.showings) do |idx|
           queue = find_queue(idx)
 
-          Redlock::Client.new([conn]).lock("#{queue.name}-locked", 3000) do |locked|
-            if locked && !Janitor.locked?(queue.name) && queue.length < showing.capacity
+          # Redlock::Client.new([conn]).lock("#{queue.name}-locked", 3000) do |locked|
+            if !Janitor.locked?(queue.name) && below_capacity?(queue)
               yield queue
               return
             end
-          end
+          # end
 
           next if idx < showing.showings
 
@@ -30,6 +30,10 @@ module Box
       end
 
       private
+
+      def below_capacity?(queue)
+        queue.length < showing.capacity
+      end
 
       def find_queue(idx)
         showing.send(config.reserved, idx)
